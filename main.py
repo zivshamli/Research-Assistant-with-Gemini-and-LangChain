@@ -16,6 +16,7 @@ load_dotenv()  # Load environment variables from .env file
 
 # specify all of the field that you want as output from your LLM call
 class ResearchResponse(BaseModel):
+    text: str
     topic: str
     summary: str
     sources: list[str]
@@ -82,8 +83,9 @@ try:
     print(structured_response)
     structured_response_Json = json.loads(raw_output)
     tools_list=structured_response_Json.get("tools", [])
-    if "save" in tools_list:
-        save_tool.invoke({"data": structured_response_Json.get("summary", "")})
+    for tool_name in tools_list:
+        if tool_name == "save":
+            save_tool.invoke({"data": structured_response_Json.get("text", "")})
 except Exception as e:
     print("Error parsing response:", e,"Raw response -- ", raw_response)
 
