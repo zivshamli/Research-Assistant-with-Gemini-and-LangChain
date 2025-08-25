@@ -41,9 +41,8 @@ prompt=ChatPromptTemplate.from_messages(
          """
          You are a research assistant that will help generate research paper.
          Answer the user query and use necessary tools.
-    
-        
-
+         If the user wants to save the output, include the "save" tool in your response. 
+         the output in this format and provide no other text{format_instructions}
          """
        ),
        ("placeholder","{chat_history}"),
@@ -52,7 +51,7 @@ prompt=ChatPromptTemplate.from_messages(
 
     ]
 
-)
+).partial(format_instructions=parser.get_format_instructions())
 
 # Define the tools to be used by the agent
 
@@ -81,6 +80,10 @@ if raw_output.endswith("```"):
 try:
     structured_response=parser.parse(raw_output)
     print(structured_response)
+    structured_response_Json = json.loads(raw_output)
+    tools_list=structured_response_Json.get("tools", [])
+    if "save" in tools_list:
+        save_tool.invoke({"data": structured_response_Json.get("summary", "")})
 except Exception as e:
     print("Error parsing response:", e,"Raw response -- ", raw_response)
 
