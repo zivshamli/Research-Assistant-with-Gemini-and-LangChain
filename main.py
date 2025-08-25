@@ -56,7 +56,7 @@ prompt=ChatPromptTemplate.from_messages(
 
 # Define the tools to be used by the agent
 
-tools=[search_tool,wiki_tool,save_tool]
+tools=[search_tool,wiki_tool,save_tool,speak_tool]
 
 # Create the agent
 agent=create_tool_calling_agent(
@@ -86,6 +86,8 @@ try:
     for tool_name in tools_list:
         if tool_name == "save":
             save_tool.invoke({"data": structured_response_Json.get("text", "")})
+        elif tool_name == "speak":
+            speak_tool.invoke({"text": structured_response_Json.get("text", "")})
 except Exception as e:
     print("Error parsing response:", e,"Raw response -- ", raw_response)
 

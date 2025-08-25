@@ -5,13 +5,11 @@ from langchain.tools import Tool
 from datetime import datetime
 import re
 
-def clean_output(text: str) -> str:
-    return re.sub(r"^```json\s*|\s*```$", "", text.strip(), flags=re.DOTALL)
+
 
 def save_to_txt(data: str, filename: str = "research_output.txt"):
-    clean_data = clean_output(data)
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    formatted_data = f"--- Research Output ---\nTimestamp: {timestamp}\n\n{clean_data}\n\n"
+    formatted_data = f"--- Research Output ---\nTimestamp: {timestamp}\n\n{data}\n\n"
     with open(filename, "a", encoding="utf-8") as f:
         f.write(formatted_data)
     return f"Data saved to {filename}"   
