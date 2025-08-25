@@ -81,13 +81,12 @@ if raw_output.endswith("```"):
 try:
     structured_response=parser.parse(raw_output)
     print(structured_response)
-    structured_response_Json = json.loads(raw_output)
-    tools_list=structured_response_Json.get("tools", [])
+    tools_list=structured_response.tools
     for tool_name in tools_list:
         if tool_name == "save":
-            save_tool.invoke({"data": structured_response_Json.get("text", "")})
+            save_tool.invoke({"data": structured_response.text})
         elif tool_name == "speak":
-            speak_tool.invoke({"text": structured_response_Json.get("text", "")})
+            speak_tool.invoke({"text": structured_response.text})
 except Exception as e:
     print("Error parsing response:", e,"Raw response -- ", raw_response)
 
