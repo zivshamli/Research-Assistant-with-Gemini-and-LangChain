@@ -10,7 +10,7 @@ import re
 def save_to_txt(data: str, filename: str = "research_output.txt"):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     formatted_data = f"--- Research Output ---\nTimestamp: {timestamp}\n\n{data}\n\n"
-    with open(filename, "a", encoding="utf-8") as f:
+    with open(filename, "w", encoding="utf-8") as f:
         f.write(formatted_data)
     return f"Data saved to {filename}"   
 
@@ -40,5 +40,5 @@ speak_tool = Tool(
     func=speak_text
 )
 
-api_wrapper = WikipediaAPIWrapper(top_k_results=1,doc_content_chars_max=100)
+api_wrapper = WikipediaAPIWrapper(top_k_results=1,doc_content_chars_max=200)
 wiki_tool=WikipediaQueryRun(api_wrapper=api_wrapper)

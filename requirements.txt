@@ -8,3 +8,5 @@ langchain-community
 duckduckgo-search
 pyttsx3
 ddgs
+uvicorn
+fastapi
